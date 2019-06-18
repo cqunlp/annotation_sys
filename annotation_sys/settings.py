@@ -31,12 +31,17 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+'user.apps.UserConfig',
+    'paper.apps.PaperConfig',
+    'job.apps.JobConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -75,6 +80,7 @@ WSGI_APPLICATION = 'annotation_sys.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'new_biaozhu',
         'USER': 'root',
         'PASSWORD': 'cqu1701',
@@ -124,7 +130,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 #LOGIN_URL = '/crawler/login/'
-#AUTH_USER_MODEL = 'crawler.User'
+AUTH_USER_MODEL = 'user.User'
 EXCLUDE_URL =  (
     '/*/'
 )
