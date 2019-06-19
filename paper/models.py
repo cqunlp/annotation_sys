@@ -4,12 +4,12 @@ from django.db import models
 # Create your models here.
 
 
-class Subject(models.Model):
+class Subject(models.Model):#学科
     id = models.AutoField('id', primary_key=True)
-    name=models.CharField('',max_length=32)
+    name=models.CharField('学科名称',max_length=32)
 
 
-class Paper(models.Model):
+class Paper(models.Model):#论文模型
     id = models.AutoField('论文id', primary_key=True)
     journal=models.CharField('期刊号',max_length=32)
     journal_tips=models.CharField('期刊信息',max_length=128)
@@ -21,14 +21,14 @@ class Paper(models.Model):
     def __str__(self):
         return self.paper_title
 
-class Paper_contents(models.Model):
+class Paper_contents(models.Model):#论文节点（小标题）
     id = models.AutoField('id', primary_key=True)
-    headline=models.CharField('',max_length=32)
-    parent=models.IntegerField('')
+    headline=models.CharField('小标题',max_length=32)
+    parent=models.IntegerField('父节点id')
     paper=models.OneToOneField(Paper,on_delete=models.DO_NOTHING)
 
 
-class Paragraph(models.Model):
+class Paragraph(models.Model):#论文段落内容
     id = models.AutoField('id', primary_key=True)
     paragraph_content=models.TextField()
     paragraph_type=models.IntegerField('paragraph_type')

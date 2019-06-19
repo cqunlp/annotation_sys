@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-'user.apps.UserConfig',
+    'user.apps.UserConfig',
     'paper.apps.PaperConfig',
     'job.apps.JobConfig',
 
@@ -129,7 +129,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-#LOGIN_URL = '/crawler/login/'
+LOGIN_URL = '/user/login/'
 AUTH_USER_MODEL = 'user.User'
 EXCLUDE_URL =  (
     '/*/'
