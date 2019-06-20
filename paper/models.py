@@ -7,7 +7,14 @@ from django.db import models
 class Subject(models.Model):#学科
     id = models.AutoField('id', primary_key=True)
     name=models.CharField('学科名称',max_length=32)
+    def __str__(self):
+        return self.name
 
+class Domain(models.Model):#领域
+    id = models.AutoField('id', primary_key=True)
+    name=models.CharField('领域名称',max_length=32)
+    def __str__(self):
+        return self.name
 
 class Paper(models.Model):#论文模型
     id = models.AutoField('论文id', primary_key=True)
@@ -18,6 +25,8 @@ class Paper(models.Model):#论文模型
     keywords=models.CharField('关键词',max_length=128)
     journal_tips=models.CharField('期刊信息',max_length=128)
     subject=models.OneToOneField(Subject, on_delete=models.CASCADE)
+    domain=models.OneToOneField(Domain, on_delete=models.CASCADE)
+
     def __str__(self):
         return self.paper_title
 

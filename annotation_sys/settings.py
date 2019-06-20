@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'user.apps.UserConfig',
     'paper.apps.PaperConfig',
     'job.apps.JobConfig',
@@ -131,6 +132,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 LOGIN_URL = '/user/login/'
 AUTH_USER_MODEL = 'user.User'
+LOGIN_REDIRECT_URL = '/'
+REST_FRAMEWORK = {
+    #分页
+    #"PAGE_SIZE":10,   #每页显示多少个
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+
+}
 EXCLUDE_URL =  (
     '/*/'
 )

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from paper.models import Subject,Paragraph,Paper
+from paper.models import Subject,Paragraph,Paper,Domain
 from user.models import User
 # Create your models here.
 
@@ -18,6 +18,7 @@ class Label(models.Model):
     background_color=models.CharField(max_length=32)
     text_color=models.CharField(max_length=32)
     subject=models.OneToOneField(Subject,on_delete=models.CASCADE)
+    domain=models.OneToOneField(Domain,on_delete=models.CASCADE)
     job = models.OneToOneField(Job,on_delete=models.CASCADE)
 
 class Entity(models.Model):

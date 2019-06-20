@@ -1,9 +1,15 @@
-from django.urls import path
+from django.urls import path,include
 
 from . import views
+from rest_framework import routers
 
-app_name = 'paper'
+router = routers.DefaultRouter()
+router.register('subject', views.SubjectViewSet)
+router.register('domain', views.DomainViewSet)
+router.register('paper', views.PaperViewSet)
+
+#app_name = 'paper'
 urlpatterns = [
-    #path('login',views.login_view)
-
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
