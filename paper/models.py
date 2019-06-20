@@ -24,8 +24,8 @@ class Paper(models.Model):#论文模型
     paper_authors=models.CharField('论文作者',max_length=128)
     keywords=models.CharField('关键词',max_length=128)
     journal_tips=models.CharField('期刊信息',max_length=128)
-    subject=models.OneToOneField(Subject, on_delete=models.CASCADE)
-    domain=models.OneToOneField(Domain, on_delete=models.CASCADE)
+    subject=models.ForeignKey(Subject, on_delete=models.CASCADE)
+    domain=models.ForeignKey(Domain, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.paper_title
@@ -34,14 +34,14 @@ class Paper_contents(models.Model):#论文节点（小标题）
     id = models.AutoField('id', primary_key=True)
     headline=models.CharField('小标题',max_length=32)
     parent=models.IntegerField('父节点id')
-    paper=models.OneToOneField(Paper,on_delete=models.DO_NOTHING)
+    paper=models.ForeignKey(Paper,on_delete=models.DO_NOTHING)
 
 
 class Paragraph(models.Model):#论文段落内容
     id = models.AutoField('id', primary_key=True)
     paragraph_content=models.TextField()
     paragraph_type=models.IntegerField('paragraph_type')
-    content=models.OneToOneField(Paper_contents,on_delete=models.DO_NOTHING)
+    content=models.ForeignKey(Paper_contents,on_delete=models.DO_NOTHING)
     def __str__(self):
         return self.paragraph_content
 

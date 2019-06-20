@@ -12,7 +12,9 @@ import decimal
 import datetime
 from django.contrib.auth.decorators import login_required
 from .serializers import *
-from rest_framework import viewsets
+from rest_framework import viewsets,filters
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 # Create your views here.
 
@@ -20,6 +22,17 @@ from rest_framework import viewsets
 class SubjectViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.all().order_by('-id')
     serializer_class = SubjectSerialiser
+    filter_backends = (filters.SearchFilter,DjangoFilterBackend)
+    filterset_fields = ('id', 'name')
+    search_fields = ('name')
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        print(user)
+        return Subject.objects.all()
 class DomainViewSet(viewsets.ModelViewSet):
     queryset = Domain.objects.all().order_by('-id')
     serializer_class = DomainSerialiser

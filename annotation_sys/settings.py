@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'user.apps.UserConfig',
     'paper.apps.PaperConfig',
     'job.apps.JobConfig',
@@ -137,6 +138,7 @@ REST_FRAMEWORK = {
     #分页
     #"PAGE_SIZE":10,   #每页显示多少个
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 
 }
 EXCLUDE_URL =  (
