@@ -19,3 +19,13 @@ class PagerSerialiser(serializers.ModelSerializer):
     class Meta:
         model = Paper
         fields = "__all__"
+
+class Paper_contentsSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Paper_contents
+        fields = "__all__"
+
+class ParagraphSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Paragraph
+        fields = "__all__"

@@ -138,7 +138,7 @@ REST_FRAMEWORK = {
     #分页
     #"PAGE_SIZE":10,   #每页显示多少个
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend','rest_framework.filters.SearchFilter','rest_framework.filters.OrderingFilter')
 
 }
 EXCLUDE_URL =  (

@@ -22,20 +22,30 @@ from django_filters.rest_framework import DjangoFilterBackend
 class SubjectViewSet(viewsets.ModelViewSet):
     queryset = Subject.objects.all().order_by('-id')
     serializer_class = SubjectSerialiser
-    filter_backends = (filters.SearchFilter,DjangoFilterBackend)
-    filterset_fields = ('id', 'name')
-    search_fields = ('name')
-    def get_queryset(self):
-        """
-        This view should return a list of all the purchases
-        for the currently authenticated user.
-        """
-        user = self.request.user
-        print(user)
-        return Subject.objects.all()
+    filterset_fields = ['id', 'name']
+    search_fields = ['name']
+
 class DomainViewSet(viewsets.ModelViewSet):
     queryset = Domain.objects.all().order_by('-id')
     serializer_class = DomainSerialiser
+    filterset_fields = ['id', 'name']
+    search_fields = ['name']
+
 class PaperViewSet(viewsets.ModelViewSet):
     queryset = Paper.objects.all().order_by('-id')
     serializer_class = PagerSerialiser
+    filterset_fields = ['id', 'paper_title','keywords','subject','domain']
+    search_fields = ['paper_title','keywords',]
+
+class Paper_contentsViewSet(viewsets.ModelViewSet):
+    queryset = Paper_contents.objects.all().order_by('-id')
+    serializer_class = Paper_contentsSerialiser
+    filterset_fields = ['id', 'parent','paper']
+    search_fields = ['headline']
+
+class ParagraphViewSet(viewsets.ModelViewSet):
+    queryset = Paragraph.objects.all().order_by('-id')
+    serializer_class = ParagraphSerialiser
+    filterset_fields = ['id', 'paragraph_type','content']
+    search_fields = ['paragraph_content']
+

@@ -23,7 +23,6 @@ class Paper(models.Model):#论文模型
     paper_title=models.CharField('论文标题',max_length=128)
     paper_authors=models.CharField('论文作者',max_length=128)
     keywords=models.CharField('关键词',max_length=128)
-    journal_tips=models.CharField('期刊信息',max_length=128)
     subject=models.ForeignKey(Subject, on_delete=models.CASCADE)
     domain=models.ForeignKey(Domain, on_delete=models.CASCADE)
 
@@ -33,8 +32,10 @@ class Paper(models.Model):#论文模型
 class Paper_contents(models.Model):#论文节点（小标题）
     id = models.AutoField('id', primary_key=True)
     headline=models.CharField('小标题',max_length=32)
-    parent=models.IntegerField('父节点id')
+    parent=models.IntegerField('父节点id',default=0)
     paper=models.ForeignKey(Paper,on_delete=models.DO_NOTHING)
+    def __str__(self):
+        return self.headline
 
 
 class Paragraph(models.Model):#论文段落内容

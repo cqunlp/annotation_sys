@@ -7,6 +7,8 @@ router = routers.DefaultRouter()
 router.register('subject', views.SubjectViewSet)
 router.register('domain', views.DomainViewSet)
 router.register('paper', views.PaperViewSet)
+router.register('content', views.Paper_contentsViewSet)
+router.register('paragraph', views.ParagraphViewSet)
 
 #app_name = 'paper'
 urlpatterns = [
