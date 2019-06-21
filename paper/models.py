@@ -40,8 +40,8 @@ class Paper_contents(models.Model):#论文节点（小标题）
 
 class Paragraph(models.Model):#论文段落内容
     id = models.AutoField('id', primary_key=True)
-    paragraph_content=models.TextField()
-    paragraph_type=models.IntegerField('paragraph_type')
+    paragraph_content=models.TextField('段落内容')
+    paragraph_type=models.IntegerField('段落类型')
     content=models.ForeignKey(Paper_contents,on_delete=models.DO_NOTHING)
     def __str__(self):
         return self.paragraph_content

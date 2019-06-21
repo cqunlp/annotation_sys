@@ -24,6 +24,10 @@ class SubjectViewSet(viewsets.ModelViewSet):
     serializer_class = SubjectSerialiser
     filterset_fields = ['id', 'name']
     search_fields = ['name']
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+        return Subject.objects.filter(id=1)
 
 class DomainViewSet(viewsets.ModelViewSet):
     queryset = Domain.objects.all().order_by('-id')
