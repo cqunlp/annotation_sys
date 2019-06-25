@@ -10,7 +10,8 @@ class Job(models.Model):
     id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=32)
     job_table=models.CharField(max_length=32)
-
+    def __str__(self):
+        return self.name
 class Label(models.Model):
     id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=32)
@@ -20,14 +21,18 @@ class Label(models.Model):
     subject=models.ForeignKey(Subject,on_delete=models.CASCADE)
     domain=models.ForeignKey(Domain,on_delete=models.CASCADE)
     job = models.ForeignKey(Job,on_delete=models.CASCADE)
-
+    def __str__(self):
+        return self.name
 class Entity(models.Model):
     id = models.AutoField(primary_key=True)
+    name=models.CharField(max_length=64)
     start_offset=models.IntegerField()
     end_offset=models.IntegerField()
     paragraph=models.ForeignKey(Paragraph,on_delete=models.CASCADE)
     label=models.ForeignKey(Label,on_delete=models.CASCADE)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
 
 class Relation(models.Model):
     id = models.AutoField(primary_key=True)

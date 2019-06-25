@@ -25,6 +25,7 @@ class Paper_contentsSerialiser(serializers.ModelSerializer):
         fields = "__all__"
 
 class ParagraphSerialiser(serializers.ModelSerializer):
+    paper_id=serializers.IntegerField(source='content.paper.id')
     class Meta:
         model = Paragraph
         fields = "__all__"
