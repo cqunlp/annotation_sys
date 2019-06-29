@@ -15,6 +15,8 @@ class DomainSerialiser(serializers.ModelSerializer):
         fields = "__all__"
 
 class PagerSerialiser(serializers.ModelSerializer):
+    subject_name=serializers.CharField(source='subject.name')
+
     class Meta:
         model = Paper
         fields = "__all__"
