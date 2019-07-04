@@ -50,7 +50,8 @@ class Summary(models.Model):
 class Job_user(models.Model):
     id = models.AutoField(primary_key=True)
     user=models.ForeignKey(User, on_delete=models.CASCADE)#用户
-    paper=models.ForeignKey(Paper,on_delete=models.CASCADE)#文章
+    paragraph = models.ForeignKey(Paragraph, on_delete=models.CASCADE)  # 文章的段落
+    # paper=models.ForeignKey(Paper,on_delete=models.CASCADE)#文章
     job=models.ForeignKey(Job,on_delete=models.CASCADE)#任务
     status=models.BooleanField()#状态
 

@@ -51,7 +51,7 @@ class SummaryViewSet(viewsets.ModelViewSet):
 class Job_userViewSet(viewsets.ModelViewSet):
     queryset = Job_user.objects.all().order_by('-id')
     serializer_class = Job_userSerialiser
-    filterset_fields = ['id', 'user','paper','job','status']
+    filterset_fields = ['id', 'user','paragraph','job','status']
     #search_fields = ['paragraph_content']
     permission_classes = [AdminWrite]
 
