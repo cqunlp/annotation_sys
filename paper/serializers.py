@@ -14,20 +14,27 @@ class DomainSerialiser(serializers.ModelSerializer):
         model = Domain
         fields = "__all__"
 
-class PagerSerialiser(serializers.ModelSerializer):
-    subject_name=serializers.CharField(source='subject.name')
 
+
+
+
+class ParagraphSerialiser(serializers.ModelSerializer):
+    paper_id=serializers.IntegerField(source='content.paper.id',read_only=True)
     class Meta:
-        model = Paper
+        model = Paragraph
         fields = "__all__"
 
 class Paper_contentsSerialiser(serializers.ModelSerializer):
+    #paragraphs=ParagraphSerialiser(many=True,read_only=True)
     class Meta:
         model = Paper_contents
         fields = "__all__"
 
-class ParagraphSerialiser(serializers.ModelSerializer):
-    paper_id=serializers.IntegerField(source='content.paper.id')
+
+class PagerSerialiser(serializers.ModelSerializer):
+    subject_name=serializers.CharField(source='subject.name')
+
+    #contents = Paper_contentsSerialiser(many=True,read_only=True)
     class Meta:
-        model = Paragraph
+        model = Paper
         fields = "__all__"
