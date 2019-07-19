@@ -40,6 +40,7 @@ class Job_userSerialiser(serializers.ModelSerializer):
     #user=serializers.HiddenField(default=serializers.CurrentUserDefault())
     subject=serializers.IntegerField(source='paragraph.content.paper.subject.id')
     domain=serializers.IntegerField(source='paragraph.content.paper.domain.id')
+    paragraph_content=serializers.CharField(source='paragraph.paragraph_content')
 
     class Meta:
         model = Job_user
