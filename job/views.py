@@ -29,7 +29,7 @@ class LabelViewSet(viewsets.ModelViewSet):
 
 
 class EntityViewSet(viewsets.ModelViewSet):
-    queryset = Entity.objects.all().order_by('-id')
+    queryset = Entity.objects.all().order_by('start_offset')
     serializer_class = EntitySerialiser
     filterset_fields = ['id', 'paragraph','label','user']
     #search_fields = ['paper_title','keywords',]
