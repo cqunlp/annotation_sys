@@ -9,9 +9,9 @@ from rest_framework.permissions import *
 
 class AdminWrite(BasePermission):
     def has_permission(self, request, view):
-        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
+        return (request.method in [SAFE_METHODS,'PUT'] and request.user  and request.user.is_authenticated) or request.user.is_staff
     def has_object_permission(self, request, view, obj):
-        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
+        return (request.method in [SAFE_METHODS,'PUT'] and request.user  and request.user.is_authenticated) or request.user.is_staff
 
 
 class JobViewSet(viewsets.ModelViewSet):
