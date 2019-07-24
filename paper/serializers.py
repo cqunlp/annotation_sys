@@ -32,7 +32,7 @@ class Paper_contentsSerialiser(serializers.ModelSerializer):
 
 
 class PagerSerialiser(serializers.ModelSerializer):
-    subject_name=serializers.CharField(source='subject.name')
+    subject_name=serializers.CharField(source='subject.name',read_only=True)
 
     #contents = Paper_contentsSerialiser(many=True,read_only=True)
     class Meta:
