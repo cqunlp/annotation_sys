@@ -38,7 +38,7 @@ class EntityViewSet(viewsets.ModelViewSet):
 class RelationViewSet(viewsets.ModelViewSet):
     queryset = Relation.objects.all().order_by('-id')
     serializer_class = RelationSerialiser
-    filterset_fields = ['id', 'label','user']
+    filterset_fields = ['id', 'label','user','entity1','entity2']
     #search_fields = ['headline']
 
 class SummaryViewSet(viewsets.ModelViewSet):
