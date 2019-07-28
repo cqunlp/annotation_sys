@@ -3,6 +3,8 @@ from django.shortcuts import render
 from .serializers import *
 from rest_framework import viewsets,filters
 from rest_framework.permissions import *
+from rest_framework.decorators import action
+from django.shortcuts import HttpResponse
 
 # Create your views here.
 
@@ -61,4 +63,11 @@ class Job_userViewSet(viewsets.ModelViewSet):
             return Job_user.objects.all().order_by('-id')
 
         return Job_user.objects.filter(user=user)
+
+    @action(detail=True, methods=['get'])
+    def set_status(self, request, pk=None):
+        ujob = self.get_object()
+        ujob.status=True
+        ujob.save()
+        return HttpResponse('success')
 
