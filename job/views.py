@@ -65,9 +65,15 @@ class Job_userViewSet(viewsets.ModelViewSet):
         return Job_user.objects.filter(user=user)
 
     @action(detail=True, methods=['get'])
-    def set_status(self, request, pk=None):
+    def set_status_true(self, request, pk=None):
         ujob = self.get_object()
         ujob.status=True
         ujob.save()
         return HttpResponse('success')
 
+    @action(detail=True, methods=['get'])
+    def set_status_false(self, request, pk=None):
+        ujob = self.get_object()
+        ujob.status=False
+        ujob.save()
+        return HttpResponse('success')
