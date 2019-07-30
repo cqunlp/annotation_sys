@@ -5,6 +5,7 @@ from rest_framework import viewsets,filters
 from rest_framework.permissions import *
 from rest_framework.decorators import action
 from django.shortcuts import HttpResponse
+from django.db.models import Count
 
 # Create your views here.
 
@@ -77,3 +78,9 @@ class Job_userViewSet(viewsets.ModelViewSet):
         ujob.status=False
         ujob.save()
         return HttpResponse('success')
+
+
+class DispatchedViewSet(viewsets.ModelViewSet):
+    queryset = Dispatch.objects.all()
+    serializer_class = DispatchedSerialiser
+    filterset_fields =['paper','job']

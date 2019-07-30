@@ -1,6 +1,7 @@
 
 from rest_framework import serializers
 from .models import *
+from paper.models import *
 
 
 
@@ -45,3 +46,9 @@ class Job_userSerialiser(serializers.ModelSerializer):
     class Meta:
         model = Job_user
         fields = "__all__"
+
+
+class DispatchedSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Dispatch
+        fields = ['paper','job']

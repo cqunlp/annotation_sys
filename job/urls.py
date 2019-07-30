@@ -11,6 +11,8 @@ router.register('entity', views.EntityViewSet)
 router.register('relation', views.RelationViewSet)
 router.register('summary', views.SummaryViewSet)
 router.register('job_user', views.Job_userViewSet)
+router.register('dispatched', views.DispatchedViewSet)
+
 #app_name = 'job'
 urlpatterns = [
     path('', include(router.urls)),
