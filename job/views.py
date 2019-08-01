@@ -79,6 +79,18 @@ class Job_userViewSet(viewsets.ModelViewSet):
         ujob.save()
         return HttpResponse('success')
 
+    @action(detail=False, methods=['get'])
+    def Dispatchjob(self,request, pk=None):
+        userid=request.GET['user_id']
+        jobid=request.GET['job_id']
+        paperid = request.GET['paper_id']
+        paragraphs = Paragraph.objects.filter(content__paper__id=paperid)
+        for i in paragraphs:
+            u=Job_user(user_id=userid,job_id=jobid,paragraph_id=i.id,status=0)
+            u.save()
+        return HttpResponse('success')
+
+
 
 class DispatchedViewSet(viewsets.ModelViewSet):
     queryset = Dispatch.objects.all()

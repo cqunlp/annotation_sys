@@ -59,7 +59,7 @@ class Paper_contentsViewSet(viewsets.ModelViewSet):
 class ParagraphViewSet(viewsets.ModelViewSet):
     queryset = Paragraph.objects.all().order_by('-id')
     serializer_class = ParagraphSerialiser
-    filterset_fields = ['id', 'paragraph_type','content',]
+    filterset_fields = ['id', 'paragraph_type','content']
     search_fields = ['paragraph_content']
     permission_classes = [AdminWrite]
 

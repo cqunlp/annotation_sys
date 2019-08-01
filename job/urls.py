@@ -16,4 +16,5 @@ router.register('dispatched', views.DispatchedViewSet)
 #app_name = 'job'
 urlpatterns = [
     path('', include(router.urls)),
+    #path('dispatchjob',views.Dispatchjob)
 ]
