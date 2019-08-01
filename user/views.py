@@ -50,5 +50,5 @@ def logout_view(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerialiser
-    filterset_fields =['id']
+    filterset_fields =['id','is_staff']
     permission_classes = [AdminWrite]
