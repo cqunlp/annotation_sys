@@ -57,6 +57,6 @@ class Job_user(models.Model):
 
 class Dispatch(models.Model):
 
-    job=models.ForeignKey(Job,on_delete=models.CASCADE)#任务
+    job=models.ForeignKey(Job,on_delete=models.DO_NOTHING)#任务
     paper=models.ForeignKey(Paper,on_delete=models.DO_NOTHING)
 

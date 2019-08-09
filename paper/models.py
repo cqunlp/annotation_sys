@@ -25,7 +25,7 @@ class Paper(models.Model):#论文模型
     keywords=models.CharField('关键词',max_length=128)
     subject=models.ForeignKey(Subject, on_delete=models.CASCADE)
     domain=models.ForeignKey(Domain, on_delete=models.CASCADE)
-
+    filename=models.CharField(blank=True,null=True,max_length=128)
     def __str__(self):
         return self.paper_title
 
