@@ -51,7 +51,8 @@ try:
         }
         print(paper)
 
-
+        if paper['journal']=='':
+            paper['journal']='计算机学报'
 
         if flag==True:
             jg = requests.post(url='http://127.0.0.1/paper/paper/', data=paper, headers=header)
@@ -63,7 +64,7 @@ try:
                 for j in i:
                     if j[0] == 'n':
                         getnode(i[j], paperid, 0)
-        if paper['paper_title']=='面向超媒体链接的RESTful服务隐私建模方法':
+        if paper['paper_title']=='特征模型融合研究':
             flag=True
 except Exception :
     pass
