@@ -86,14 +86,7 @@ WSGI_APPLICATION = 'annotation_sys.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'new_biaozhu',
-        'USER': 'root',
-        'PASSWORD': 'cqu1701',
-        'HOST': '202.202.5.140',
-        'PORT': '3306',
-    }
+    
 
 }
 
