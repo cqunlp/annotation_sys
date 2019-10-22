@@ -13,6 +13,8 @@ class JobSerialiser(serializers.ModelSerializer):
         fields = "__all__"
 
 class LabelSerialiser(serializers.ModelSerializer):
+    subject=serializers.IntegerField(source='domain.subject.id',read_only=True)
+
     class Meta:
         model = Label
         fields = "__all__"
@@ -52,3 +54,16 @@ class DispatchedSerialiser(serializers.ModelSerializer):
     class Meta:
         model = Dispatch
         fields = ['paper','job']
+
+
+class ProjectSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = "__all__"
+
+class ProjectRoleSerialiser(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = ProjectRole
+        fields = "__all__"

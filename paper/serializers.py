@@ -10,6 +10,7 @@ class SubjectSerialiser(serializers.ModelSerializer):
         fields = "__all__"
 
 class DomainSerialiser(serializers.ModelSerializer):
+
     class Meta:
         model = Domain
         fields = "__all__"
@@ -32,7 +33,8 @@ class Paper_contentsSerialiser(serializers.ModelSerializer):
 
 
 class PagerSerialiser(serializers.ModelSerializer):
-    subject_name=serializers.CharField(source='subject.name',read_only=True)
+    subject_name=serializers.CharField(source='domain.subject.name',read_only=True)
+    subject=serializers.IntegerField(source='domain.subject.id',read_only=True)
 
     #contents = Paper_contentsSerialiser(many=True,read_only=True)
     class Meta:

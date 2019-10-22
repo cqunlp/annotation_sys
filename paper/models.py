@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-
 # Create your models here.
+from job.project import Project
 
 
 class Subject(models.Model):#学科
     id = models.AutoField('id', primary_key=True)
     name=models.CharField('学科名称',max_length=32)
+    project=models.ForeignKey(Project,on_delete=models.CASCADE)#
+
     def __str__(self):
         return self.name
 
 class Domain(models.Model):#领域
     id = models.AutoField('id', primary_key=True)
     name=models.CharField('领域名称',max_length=32)
+    subject=models.ForeignKey(Subject, on_delete=models.CASCADE)
     def __str__(self):
         return self.name
 
@@ -23,7 +26,7 @@ class Paper(models.Model):#论文模型
     paper_title=models.CharField('论文标题',max_length=128)
     paper_authors=models.CharField('论文作者',max_length=128)
     keywords=models.CharField('关键词',max_length=128)
-    subject=models.ForeignKey(Subject, on_delete=models.CASCADE)
+    #subject=models.ForeignKey(Subject, on_delete=models.CASCADE)
     domain=models.ForeignKey(Domain, on_delete=models.CASCADE)
     filename=models.CharField(blank=True,null=True,max_length=128)
     def __str__(self):

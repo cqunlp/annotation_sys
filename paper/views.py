@@ -43,7 +43,7 @@ class DomainViewSet(viewsets.ModelViewSet):
 class PaperViewSet(viewsets.ModelViewSet):
     queryset = Paper.objects.all().order_by('-id')
     serializer_class = PagerSerialiser
-    filterset_fields = ['id', 'paper_title','keywords','subject','domain']
+    filterset_fields = ['id', 'paper_title','keywords','domain']
     search_fields = ['paper_title','keywords',]
     permission_classes = [AdminWrite]
 
