@@ -17,9 +17,32 @@ from rest_framework import status
 
 class AdminWrite(BasePermission):
     def has_permission(self, request, view):
-        return (request.method in ['GET','PUT'] and request.user  and request.user.is_authenticated) or request.user.is_staff
+        if request.user.is_staff:
+            return True
+        return (request.method in SAFE_METHODS and  request.user.is_authenticated)
     def has_object_permission(self, request, view, obj):
-        return (request.method in ['GET','PUT'] and request.user  and request.user.is_authenticated) or request.user.is_staff
+        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
+
+
+class Jobpermission(BasePermission):
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
+        pr = ProjectRole.objects.filter(user=request.user, role=1).count()
+        if pr > 0:
+            return True
+        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_staff:
+            return True
+        if request.method in ['DELETE','PUT','POST']:
+            pj = Job.objects.get(id=request.data['job']).project
+            pr = ProjectRole.objects.filter(user=request.user,project=pj, role=1).count()
+            if pr>0:
+                return True
+        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
+
+
 
 class Projectpermission(BasePermission):
     def has_permission(self, request, view):
@@ -43,6 +66,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerialiser
     filterset_fields = ['id', 'name']
     search_fields = ['name']
+    permission_classes = [AdminWrite]
 
 
 class ProjectRoleViewSet(viewsets.ModelViewSet):
@@ -68,6 +92,12 @@ class JobViewSet(viewsets.ModelViewSet):
     serializer_class = JobSerialiser
     filterset_fields = ['id', 'name']
     search_fields = ['name','job_table']
+    permission_classes = [Projectpermission]
+    def create(self, request):
+        pr = ProjectRole.objects.filter(user=request.user, project=request.data['project'], role=1).count()
+        if pr > 0 or request.user.is_staff:
+            return super().create(request)
+        return HttpResponse("403")
 
 
 class LabelViewSet(viewsets.ModelViewSet):
@@ -75,13 +105,26 @@ class LabelViewSet(viewsets.ModelViewSet):
     serializer_class = LabelSerialiser
     filterset_fields = ['id', 'name','domain','job']
     search_fields = ['name']
-
+    permission_classes = [Jobpermission]
+    def create(self, request):
+        pj = Job.objects.get(id=request.data['job']).project
+        pr = ProjectRole.objects.filter(user=request.user, project=pj, role=1).count()
+        if pr > 0 or request.user.is_staff:
+            return super().create(request)
+        return HttpResponse("403")
 
 class EntityViewSet(viewsets.ModelViewSet):
     queryset = Entity.objects.all().order_by('start_offset')
     serializer_class = EntitySerialiser
     filterset_fields = ['id', 'paragraph','label','user']
     #search_fields = ['paper_title','keywords',]
+    permission_classes = [Jobpermission]
+    def create(self, request):
+        pj = Job.objects.get(id=request.data['job']).project
+        pr = ProjectRole.objects.filter(user=request.user, project=pj, role=1).count()
+        if pr > 0 or request.user.is_staff:
+            return super().create(request)
+        return HttpResponse("403")
 
 
 class RelationViewSet(viewsets.ModelViewSet):
@@ -89,12 +132,26 @@ class RelationViewSet(viewsets.ModelViewSet):
     serializer_class = RelationSerialiser
     filterset_fields = ['id', 'label','user','entity1','entity2']
     #search_fields = ['headline']
+    permission_classes = [Jobpermission]
+    def create(self, request):
+        pj = Job.objects.get(id=request.data['job']).project
+        pr = ProjectRole.objects.filter(user=request.user, project=pj, role=1).count()
+        if pr > 0 or request.user.is_staff:
+            return super().create(request)
+        return HttpResponse("403")
 
 class SummaryViewSet(viewsets.ModelViewSet):
     queryset = Summary.objects.all().order_by('-id')
     serializer_class = SummarySerialiser
     filterset_fields = ['id', 'paragraph','user']
     #search_fields = ['paragraph_content']
+    permission_classes = [Jobpermission]
+    def create(self, request):
+        pj = Job.objects.get(id=request.data['job']).project
+        pr = ProjectRole.objects.filter(user=request.user, project=pj, role=1).count()
+        if pr > 0 or request.user.is_staff:
+            return super().create(request)
+        return HttpResponse("403")
 
 
 class Job_userViewSet(viewsets.ModelViewSet):
@@ -102,7 +159,13 @@ class Job_userViewSet(viewsets.ModelViewSet):
     serializer_class = Job_userSerialiser
     filterset_fields = ['id', 'user','paragraph','job','status']
     #search_fields = ['paragraph_content']
-    permission_classes = [AdminWrite]
+    permission_classes = [Jobpermission]
+    def create(self, request):
+        pj = Job.objects.get(id=request.data['job']).project
+        pr = ProjectRole.objects.filter(user=request.user, project=pj, role=1).count()
+        if pr > 0 or request.user.is_staff:
+            return super().create(request)
+        return HttpResponse("403")
 
     def get_queryset(self):
         user = self.request.user
@@ -142,6 +205,7 @@ class DispatchedViewSet(viewsets.ModelViewSet):
     queryset = Dispatch.objects.all()
     serializer_class = DispatchedSerialiser
     filterset_fields =['paper','job']
+    permission_classes = [AdminWrite]
 
 
 def dictfetchall(cursor):
