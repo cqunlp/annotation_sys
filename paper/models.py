@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 # Create your models here.
-from job.project import Project
 
 
 class Subject(models.Model):#学科
     id = models.AutoField('id', primary_key=True)
     name=models.CharField('学科名称',max_length=32)
-    project=models.ForeignKey(Project,on_delete=models.CASCADE)#
+    #project=models.ForeignKey(Project,on_delete=models.CASCADE)#
 
     def __str__(self):
         return self.name
@@ -44,7 +43,7 @@ class Paper_contents(models.Model):#论文节点（小标题）
 class Paragraph(models.Model):#论文段落内容
     id = models.AutoField('id', primary_key=True)
     paragraph_content=models.TextField('段落内容')
-    paragraph_type=models.IntegerField('段落类型')
+    paragraph_type=models.IntegerField('段落类型',default=0)
     content=models.ForeignKey(Paper_contents,related_name='paragraphs',on_delete=models.CASCADE)
     def __str__(self):
         return self.paragraph_content

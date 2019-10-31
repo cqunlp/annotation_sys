@@ -39,21 +39,21 @@ class SummarySerialiser(serializers.ModelSerializer):
         model = Summary
         fields = "__all__"
 
-class Job_userSerialiser(serializers.ModelSerializer):
+class Project_userSerialiser(serializers.ModelSerializer):
     #user=serializers.HiddenField(default=serializers.CurrentUserDefault())
     subject=serializers.IntegerField(source='paragraph.content.paper.subject.id',read_only=True)
     domain=serializers.IntegerField(source='paragraph.content.paper.domain.id',read_only=True)
     paragraph_content=serializers.CharField(source='paragraph.paragraph_content',read_only=True)
 
     class Meta:
-        model = Job_user
+        model = Project_user
         fields = "__all__"
 
 
 class DispatchedSerialiser(serializers.ModelSerializer):
     class Meta:
         model = Dispatch
-        fields = ['paper','job']
+        fields = ['paper','project']
 
 
 class ProjectSerialiser(serializers.ModelSerializer):
@@ -63,7 +63,7 @@ class ProjectSerialiser(serializers.ModelSerializer):
 
 class ProjectRoleSerialiser(serializers.ModelSerializer):
 
-
+    name=serializers.CharField(source='project.name',read_only=True)
     class Meta:
         model = ProjectRole
         fields = "__all__"

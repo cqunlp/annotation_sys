@@ -21,11 +21,14 @@ class AdminWrite(BasePermission):
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
-        pr = ProjectRole.objects.filter(user=request.user, role=1).count()
-        if pr > 0:
-            return True
-        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
+
+        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff or request.user.subject is not None
     def has_object_permission(self, request, view, obj):
+        if request.user.is_staff:
+            return True
+        if isinstance(obj,Subject):
+            return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated)
+            #obj=obj.project
         if isinstance(obj,Paragraph):
             obj=obj.content
         if isinstance(obj,Paper_contents):
@@ -34,13 +37,10 @@ class AdminWrite(BasePermission):
             obj=obj.domain
         if isinstance(obj,Domain):
             obj=obj.subject
-        if isinstance(obj,Subject):
-            obj=obj.project
-        if request.user.is_staff:
-            return True
+
+
         if request.method in ['DELETE','PUT','POST']:
-            pr = ProjectRole.objects.filter(user=request.user,project=obj, role=1).count()
-            if pr>0:
+            if request.user.subject.id==obj.id:
                 return True
         return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
 

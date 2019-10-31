@@ -2,9 +2,8 @@
 from django.db import models
 from paper.models import Paragraph,Paper,Domain
 # Create your models here.
-from job.project import *
 from user.models import User
-
+from paper.models import Subject
 
 
 
@@ -12,11 +11,28 @@ class Job(models.Model):
     id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=32)#任务名称
     job_table=models.CharField(max_length=32)#任务对应数据表
-    project=models.ForeignKey(Project,on_delete=models.CASCADE)#
 
 
     def __str__(self):
         return self.name
+
+
+class Project(models.Model):
+    id = models.AutoField(primary_key=True)
+    name=models.CharField(max_length=32)#项目名称
+    domain=models.ForeignKey(Domain,on_delete=models.CASCADE)
+    job=models.ForeignKey(Job,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class ProjectRole(models.Model):
+    id = models.AutoField(primary_key=True)
+    project=models.ForeignKey(Project,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+
+
 class Label(models.Model):
     id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=32)#标签名称
@@ -25,7 +41,7 @@ class Label(models.Model):
     text_color=models.CharField(max_length=32)#文字颜色
     #subject=models.ForeignKey(Subject,on_delete=models.CASCADE)#学科
     domain=models.ForeignKey(Domain,on_delete=models.CASCADE)#领域
-    job = models.ForeignKey(Job,on_delete=models.CASCADE)#任务
+    project = models.ForeignKey(Project,on_delete=models.CASCADE)
     def __str__(self):
         return self.name
 class Entity(models.Model):
@@ -52,15 +68,17 @@ class Summary(models.Model):
     label=models.ForeignKey(Label,on_delete=models.CASCADE)#标签
     user = models.ForeignKey(User, on_delete=models.CASCADE)#用户
 
-class Job_user(models.Model):
+class Project_user(models.Model):
     id = models.AutoField(primary_key=True)
     user=models.ForeignKey(User, on_delete=models.CASCADE)#用户
     paragraph = models.ForeignKey(Paragraph, on_delete=models.CASCADE)  # 文章的段落
     # paper=models.ForeignKey(Paper,on_delete=models.CASCADE)#文章
-    job=models.ForeignKey(Job,on_delete=models.CASCADE)#任务
+    project = models.ForeignKey(Project,on_delete=models.CASCADE)
     status=models.BooleanField()#状态
 
 class Dispatch(models.Model):
     id = models.AutoField(primary_key=True)
-    job=models.ForeignKey(Job,on_delete=models.DO_NOTHING)#任务
+    project = models.ForeignKey(Project,on_delete=models.DO_NOTHING)
     paper=models.ForeignKey(Paper,on_delete=models.DO_NOTHING)
+    class Meta:
+        db_table='dispatched'

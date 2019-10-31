@@ -11,14 +11,14 @@ from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import render
 from django.shortcuts import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.hashers import make_password, check_password
 # Create your views here.
 
 class AdminWrite(BasePermission):
     def has_permission(self, request, view):
-        return (request.method in ['GET','PUT'] and request.user  and request.user.is_authenticated) or request.user.is_staff
+        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
     def has_object_permission(self, request, view, obj):
-        return (request.method in ['GET','PUT'] and request.user  and request.user.is_authenticated) or request.user.is_staff
+        return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
 
 
 def login_view(request):
@@ -52,3 +52,10 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerialiser
     filterset_fields =['id','is_staff','username']
     permission_classes = [AdminWrite]
+
+
+def reg(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    User(username=username,password=make_password(password),is_active=1).save()
+    return HttpResponse("success")
