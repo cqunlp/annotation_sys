@@ -163,15 +163,19 @@ class Project_userViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def Dispatchjob(self,request, pk=None):
-        userid=request.GET['user_id']
-        jobid=request.GET['job_id']
-        paperid = request.GET['paper_id']
-        paragraphs = Paragraph.objects.filter(content__paper__id=paperid)
-        for i in paragraphs:
-            u=Project_user(user_id=userid,job_id=jobid,paragraph_id=i.id,status=0)
-            u.save()
-        return HttpResponse('success')
 
+        userid=request.GET['user_id']
+        projectid=request.GET['project_id']
+        paperid = request.GET['paper_id']
+        pj=Project.objects.get(id=projectid)
+        if request.user.subject is not None and request.user.subject.id==pj.domain.subject.id:
+            paragraphs = Paragraph.objects.filter(content__paper__id=paperid)
+            for i in paragraphs:
+                u = Project_user(user_id=userid, project_id=projectid, paragraph_id=i.id, status=0)
+                u.save()
+            return HttpResponse('success')
+
+        return HttpResponse("403")
 
 
 class DispatchedViewSet(viewsets.ModelViewSet):
