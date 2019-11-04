@@ -48,6 +48,20 @@ class Paragraph(models.Model):#论文段落内容
     def __str__(self):
         return self.paragraph_content
 
-
+class Paperundispatched(models.Model):#论文模型
+    id = models.AutoField('论文id', primary_key=True)
+    journal=models.CharField('期刊号',max_length=32)
+    journal_tips=models.CharField('期刊信息',max_length=128)
+    paper_title=models.CharField('论文标题',max_length=128)
+    paper_authors=models.CharField('论文作者',max_length=128)
+    keywords=models.CharField('关键词',max_length=128)
+    #subject=models.ForeignKey(Subject, on_delete=models.CASCADE)
+    domain=models.ForeignKey(Domain, on_delete=models.DO_NOTHING)
+    filename=models.CharField(blank=True,null=True,max_length=128)
+    project_id=models.IntegerField()
+    def __str__(self):
+        return self.paper_title
+    class Meta:
+        db_table='undispatched'
 
 

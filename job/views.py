@@ -41,6 +41,8 @@ class Projectpermission(BasePermission):
                 return True
             if isinstance(obj,Label) and obj.project.domain.subject.id==request.user.subject.id:
                 return True
+            if isinstance(obj,ProjectRole) and obj.project.domain.subject.id==request.user.subject.id:
+                return True
         return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
 
 class Annotationpermission(BasePermission):

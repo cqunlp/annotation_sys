@@ -32,11 +32,19 @@ class Paper_contentsSerialiser(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class PagerSerialiser(serializers.ModelSerializer):
+class PaperSerialiser(serializers.ModelSerializer):
     subject_name=serializers.CharField(source='domain.subject.name',read_only=True)
     subject=serializers.IntegerField(source='domain.subject.id',read_only=True)
 
     #contents = Paper_contentsSerialiser(many=True,read_only=True)
     class Meta:
         model = Paper
+        fields = "__all__"
+class PaperundispatchedSerialiser(serializers.ModelSerializer):
+    subject_name=serializers.CharField(source='domain.subject.name',read_only=True)
+    subject=serializers.IntegerField(source='domain.subject.id',read_only=True)
+
+    #contents = Paper_contentsSerialiser(many=True,read_only=True)
+    class Meta:
+        model = Paperundispatched
         fields = "__all__"

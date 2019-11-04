@@ -12,6 +12,7 @@ from django.shortcuts import render
 from django.shortcuts import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
+from job.models import ProjectRole
 # Create your views here.
 
 class AdminWrite(BasePermission):
@@ -50,8 +51,25 @@ def logout_view(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerialiser
-    filterset_fields =['id','is_staff','username']
+    filterset_fields =['id','is_staff','username','role']
     permission_classes = [AdminWrite]
+
+    @action(detail=True, methods=['get'])
+    def set_teacher(self, request, pk=None):
+        u = self.get_object()
+        subject = request.GET['subject_id']
+        u.subject_id=subject
+        u.role=1
+        sj=Subject.objects.get(id=subject)
+        u.save()
+        return HttpResponse(sj.name)
+    @action(detail=True, methods=['get'])
+    def del_teacher(self, request, pk=None):
+        u = self.get_object()
+        u.subject_id=None
+        u.role=0
+        u.save()
+        return HttpResponse('success')
 
 
 def reg(request):
@@ -59,3 +77,4 @@ def reg(request):
     password = request.POST['password']
     User(username=username,password=make_password(password),is_active=1).save()
     return HttpResponse("success")
+

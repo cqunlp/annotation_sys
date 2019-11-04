@@ -15,6 +15,7 @@ from .serializers import *
 from rest_framework import viewsets,filters
 from rest_framework.permissions import *
 from job.project import *
+from user.models import User
 # Create your views here.
 
 class AdminWrite(BasePermission):
@@ -54,7 +55,11 @@ class SubjectViewSet(viewsets.ModelViewSet):
     filterset_fields = ['id', 'name']
     search_fields = ['name']
     permission_classes = [AdminWrite]
-
+    def create(self, request):
+        #
+        sj=super().create(request)
+        #u=User.objects.get(id=sj.data['id'])
+        return sj
 
 class DomainViewSet(viewsets.ModelViewSet):
     queryset = Domain.objects.all().order_by('-id')
@@ -66,8 +71,15 @@ class DomainViewSet(viewsets.ModelViewSet):
 
 class PaperViewSet(viewsets.ModelViewSet):
     queryset = Paper.objects.all().order_by('-id')
-    serializer_class = PagerSerialiser
+    serializer_class = PaperSerialiser
     filterset_fields = ['id', 'paper_title','keywords','domain']
+    search_fields = ['paper_title','keywords',]
+    permission_classes = [AdminWrite]
+
+class PaperundispatchedViewSet(viewsets.ModelViewSet):
+    queryset = Paperundispatched.objects.all().order_by('-id')
+    serializer_class = PaperundispatchedSerialiser
+    filterset_fields = ['id', 'project_id','keywords','domain']
     search_fields = ['paper_title','keywords',]
     permission_classes = [AdminWrite]
 

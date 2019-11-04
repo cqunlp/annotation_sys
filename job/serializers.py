@@ -62,6 +62,7 @@ class ProjectSerialiser(serializers.ModelSerializer):
         fields = "__all__"
 
 class ProjectRoleSerialiser(serializers.ModelSerializer):
+    username=serializers.CharField(source='user.username',read_only=True)
 
     name=serializers.CharField(source='project.name',read_only=True)
     class Meta:
