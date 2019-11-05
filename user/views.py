@@ -74,7 +74,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 def reg(request):
-    body=json.loads(request.body)
+    body=json.loads(request.body.decode('utf-8'))
     username = body['username']
     password = body['password']
     User(username=username,password=make_password(password),is_active=1).save()
