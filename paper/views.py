@@ -77,12 +77,20 @@ class PaperViewSet(viewsets.ModelViewSet):
     permission_classes = [AdminWrite]
 
 class PaperundispatchedViewSet(viewsets.ModelViewSet):
-    queryset = Paperundispatched.objects.all().order_by('-id')
-    serializer_class = PaperundispatchedSerialiser
-    filterset_fields = ['id', 'project_id','keywords','domain']
+
+    queryset = Paper.objects.all()
+    serializer_class = PaperSerialiser
+    filterset_fields = ['id','keywords','domain']
     search_fields = ['paper_title','keywords',]
     permission_classes = [AdminWrite]
-
+    def get_queryset(self):
+        pid=self.request.GET['project_id']
+        pps = Paperundispatched2.objects.filter(project_id=pid).order_by('-id')
+        ids = []
+        for i in pps:
+            ids.append(i.paper_id)
+        queryset = Paper.objects.exclude(id__in=ids)
+        return queryset
 
 class Paper_contentsViewSet(viewsets.ModelViewSet):
     queryset = Paper_contents.objects.all().order_by('-id')

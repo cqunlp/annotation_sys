@@ -65,3 +65,11 @@ class Paperundispatched(models.Model):#论文模型
         db_table='undispatched'
 
 
+class Paperundispatched2(models.Model):#论文模型
+    id = models.AutoField('', primary_key=True)
+    paper_id=models.IntegerField()
+
+    project_id=models.IntegerField()
+
+    class Meta:
+        db_table='undispatched2'
