@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from django.shortcuts import render
 from .serializers import *
 from rest_framework import viewsets,filters
@@ -73,8 +74,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 def reg(request):
-    username = request.POST['username']
-    password = request.POST['password']
+    body=json.loads(request.body)
+    username = body['username']
+    password = body['password']
     User(username=username,password=make_password(password),is_active=1).save()
     return HttpResponse("success")
 
