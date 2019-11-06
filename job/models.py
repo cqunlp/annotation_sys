@@ -41,7 +41,7 @@ class Label(models.Model):
     text_color=models.CharField(max_length=32)#文字颜色
     #subject=models.ForeignKey(Subject,on_delete=models.CASCADE)#学科
     domain=models.ForeignKey(Domain,on_delete=models.CASCADE)#领域
-    project = models.ForeignKey(Project,on_delete=models.CASCADE)
+    job = models.ForeignKey(Job,on_delete=models.CASCADE)
     def __str__(self):
         return self.name
 class Entity(models.Model):
@@ -76,9 +76,3 @@ class Project_user(models.Model):
     project = models.ForeignKey(Project,on_delete=models.CASCADE)
     status=models.BooleanField()#状态
 
-class Dispatch(models.Model):
-    id = models.AutoField(primary_key=True)
-    project = models.ForeignKey(Project,on_delete=models.DO_NOTHING)
-    paper=models.ForeignKey(Paper,on_delete=models.DO_NOTHING)
-    class Meta:
-        db_table='dispatched'

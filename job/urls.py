@@ -11,7 +11,6 @@ router.register('entity', views.EntityViewSet)
 router.register('relation', views.RelationViewSet)
 router.register('summary', views.SummaryViewSet)
 router.register('project_user', views.Project_userViewSet)
-router.register('dispatched', views.DispatchedViewSet)
 router.register('project', views.ProjectViewSet)
 router.register('projectrole', views.ProjectRoleViewSet)
 

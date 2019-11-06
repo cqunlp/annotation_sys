@@ -67,13 +67,15 @@ class DomainViewSet(viewsets.ModelViewSet):
     filterset_fields = ['id', 'name']
     search_fields = ['name']
     permission_classes = [AdminWrite]
-
+    def get_queryset(self):
+        queryset = Domain.objects.filter(subject__id=self.request.user.subject_id).order_by('-id')
+        return queryset
 
 class PaperViewSet(viewsets.ModelViewSet):
     queryset = Paper.objects.all().order_by('-id')
     serializer_class = PaperSerialiser
     filterset_fields = ['id', 'paper_title','keywords','domain']
-    search_fields = ['paper_title','keywords',]
+    search_fields = ['paper_title',]
     permission_classes = [AdminWrite]
 
 class PaperundispatchedViewSet(viewsets.ModelViewSet):

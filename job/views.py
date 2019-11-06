@@ -56,16 +56,17 @@ class Annotationpermission(BasePermission):
         if request.user.is_staff:
             return True
         if request.method in ['DELETE','PUT','POST']:
+            if isinstance(obj,Entity) and (obj.user_id==request.user.id or obj.user_id==2):
+                return True
             if request.user.subject is None:
                 return request.method in SAFE_METHODS
             if isinstance(obj,Project) and obj.domain.subject.id==request.user.subject.id:
                 return True
-            if isinstance(obj,Label) and obj.project.domain.subject.id==request.user.subject.id:
+            if isinstance(obj,Label) and obj.domain.subject.id==request.user.subject.id:
                 return True
             if isinstance(obj,Project_user) and obj.project.domain.subject.id== request.user.subject.id:
                 return True
-            if isinstance(obj,Entity) and (obj.label.domain.subject_id==request.user.subject.id or obj.user_id==2):
-                return True
+
         return (request.method in SAFE_METHODS and request.user  and request.user.is_authenticated) or request.user.is_staff
 
 
@@ -105,7 +106,7 @@ class JobViewSet(viewsets.ModelViewSet):
 class LabelViewSet(viewsets.ModelViewSet):
     queryset = Label.objects.all().order_by('-id')
     serializer_class = LabelSerialiser
-    filterset_fields = ['id', 'name','domain','project']
+    filterset_fields = ['id', 'name','domain','job']
     search_fields = ['name']
     permission_classes = [Projectpermission]
 
@@ -182,11 +183,7 @@ class Project_userViewSet(viewsets.ModelViewSet):
         return HttpResponse("403")
 
 
-class DispatchedViewSet(viewsets.ModelViewSet):
-    queryset = Dispatch.objects.all()
-    serializer_class = DispatchedSerialiser
-    filterset_fields =['paper','project']
-    permission_classes = [AdminWrite]
+
 
 
 def dictfetchall(cursor):
