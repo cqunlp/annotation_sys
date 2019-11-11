@@ -14,6 +14,8 @@ from django.shortcuts import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password, check_password
 from job.models import ProjectRole
+from rest_framework.authtoken.models import Token
+
 # Create your views here.
 
 class AdminWrite(BasePermission):

@@ -6,16 +6,16 @@ from .forms import *
 import time
 import json
 from django.core import serializers
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import os
+from uuid import uuid4
+from werkzeug.utils import secure_filename
+
 from django.db import connections
-import decimal
-import datetime
-from django.contrib.auth.decorators import login_required
+
 from .serializers import *
 from rest_framework import viewsets,filters
 from rest_framework.permissions import *
-from job.project import *
-from user.models import User
+from rest_framework.authtoken.models import Token
 # Create your views here.
 
 class AdminWrite(BasePermission):
@@ -108,5 +108,43 @@ class ParagraphViewSet(viewsets.ModelViewSet):
     filterset_fields = ['id', 'paragraph_type','content']
     search_fields = ['paragraph_content']
     permission_classes = [AdminWrite]
+
+
+ALLOWED_EXTENSIONS = set(['txt', 'json'])
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+def reg_paper(request):
+
+    token=request.GET['token']
+    domain=request.GET['domain']
+
+
+    if Token.objects.filter(key=token).exists():
+        f = request.FILES['myfile']
+        if not (f and allowed_file(f.name)):
+            return HttpResponse("请检查上传的类型，仅限于txt,json")
+        basepath = os.path.dirname(__file__)  # 当前文件所在路径
+        filename = '{}.{}'.format(uuid4().hex, 'txt')
+        upload_path = os.path.join(basepath, 'paper_upload', secure_filename(filename))  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
+
+        n=f.read().decode('gbk')
+        bodys = json.loads(n)
+
+        for body in bodys:
+            p = Paper(journal=body['journal'], journal_tips=body['journal_tips'], paper_authors=body['paper_authors'],
+                      paper_title=body['paper_title'], keywords=body['keywords'], filename=body['filename'],
+                      domain_id=domain)
+            p.save()
+            for i in body['contents']:
+                c = Paper_contents(headline=i['headline'], parent=i['parent'], paper_id=p.id)
+                c.save()
+                for j in i['paragraphs']:
+                    Paragraph(content_id=c.id, paragraph_content=j['paragraph_content'],
+                              paragraph_type=j['paragraph_type']).save()
+
+        return HttpResponse("success")
+    return HttpResponse("403")
+
 
 
