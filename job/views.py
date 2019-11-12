@@ -109,7 +109,18 @@ class LabelViewSet(viewsets.ModelViewSet):
     filterset_fields = ['id', 'name','domain','job']
     search_fields = ['name']
     permission_classes = [Projectpermission]
+    def create(self, request):
+        #
 
+        kj=request.data['shortcut']
+        dm=request.data['domain']
+        if len(kj)!=1 :
+            return HttpResponse("快捷键只能是a-z的一个字母")
+
+        if kj!='无' and Label.objects.filter(shortcut=kj,domain_id=dm).exists():
+            return HttpResponse("当前快捷键已存在")
+        pj=super().create(request)
+        return pj
 
 class EntityViewSet(viewsets.ModelViewSet):
     queryset = Entity.objects.all().order_by('start_offset')
