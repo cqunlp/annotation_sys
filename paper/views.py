@@ -87,11 +87,12 @@ class PaperundispatchedViewSet(viewsets.ModelViewSet):
     permission_classes = [AdminWrite]
     def get_queryset(self):
         pid=self.request.GET['project_id']
+        did=self.request.GET['domain']
         pps = Paperundispatched2.objects.filter(project_id=pid).order_by('-id')
         ids = []
         for i in pps:
             ids.append(i.paper_id)
-        queryset = Paper.objects.exclude(id__in=ids)
+        queryset = Paper.objects.filter(domain_id=did).exclude(id__in=ids)
         return queryset
 
 class Paper_contentsViewSet(viewsets.ModelViewSet):

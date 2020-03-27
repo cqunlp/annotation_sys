@@ -34,11 +34,6 @@ def getnode(ptext, paperid, parent=0):
 flag =False
 try:
     for i in db.find():
-
-
-
-
-
         paper = {
         "journal": i['tips'].split('\r\n')[0].strip('\n').strip() if 'tips' in i else '',
         "journal_tips": i['tips'].split('\r\n')[1].strip('\n').strip()if 'tips' in i else '',
