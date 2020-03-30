@@ -58,6 +58,8 @@ class Annotationpermission(BasePermission):
         if request.method in ['DELETE','PUT','POST']:
             if isinstance(obj,Entity) and (obj.user_id==request.user.id or obj.user_id==2):
                 return True
+            if isinstance(obj,Relation) and (obj.user_id==request.user.id or obj.user_id==2):
+                return True
             if request.user.subject is None:
                 return request.method in SAFE_METHODS
             if isinstance(obj,Project) and obj.domain.subject.id==request.user.subject.id:
@@ -138,6 +140,12 @@ class RelationViewSet(viewsets.ModelViewSet):
     #search_fields = ['headline']
     permission_classes = [Annotationpermission]
 
+    def get_queryset(self):
+        request=self.request
+        if 'paragraph_id' in request.GET:
+            return Relation.objects.filter(entity1__paragraph__id=request.GET['paragraph_id'])
+        else:
+            return Relation.objects.all().order_by('-id')
 
 class SummaryViewSet(viewsets.ModelViewSet):
     queryset = Summary.objects.all().order_by('-id')
